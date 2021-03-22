@@ -1,5 +1,10 @@
-function picker(data)
-param_set=[1,4,6,11,44];
+function picker(data,param_set,legend,list)
+
+if nargin<2
+    param_set=1;
+    legend='first';
+    list=repmat('unknown',size(data,1),1);
+end
 
 set(gcf,'userdata',[])
     for j = 1:numel(param_set)
@@ -7,7 +12,7 @@ set(gcf,'userdata',[])
         for i = 1:size(data,1)
             handle(j,i)=line(0,data(i,param_set(j)),'marker','.','userdata',i,'ButtonDownFcn',@highlight);
         end
-        title(num2str(param_set(j)));
+        title(legend(j));
     end
 
 function highlight(gcbo, EventData, handles)
@@ -21,6 +26,8 @@ function highlight(gcbo, EventData, handles)
         set(handle(k,new),'MarkerSize',big,'Color','red');
     end
     set(gcf,'userdata',new);
+    fprintf('%s\n',list(new,:));
+    sgtitle(list(new,:))
 end
 
 end
