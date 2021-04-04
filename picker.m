@@ -6,11 +6,17 @@ if nargin<2
     list=repmat('unknown',size(data,1),1);
 end
 
+outlier=sum(isoutlier(data(:,param_set)),2)>0;
+
 set(gcf,'userdata',[])
     for j = 1:numel(param_set)
         subplot(1,numel(param_set),j)
         for i = 1:size(data,1)
-            handle(j,i)=line(0,data(i,param_set(j)),'marker','.','userdata',i,'ButtonDownFcn',@highlight);
+            if outlier(i)
+                handle(j,i)=line(0,data(i,param_set(j)),'marker','*','userdata',i,'ButtonDownFcn',@highlight);
+            else
+                handle(j,i)=line(0,data(i,param_set(j)),'marker','.','userdata',i,'ButtonDownFcn',@highlight);
+            end
         end
         title(legend(j));
     end
